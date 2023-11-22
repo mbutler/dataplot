@@ -21,13 +21,19 @@ def save_image_to_pdf(image_data, pdf_filename):
     c = canvas.Canvas(pdf_filename, pagesize=letter)
 
     # Define image size and position
-    image_width = 400  # Adjust as needed
-    image_height = 400  # Adjust as needed
+    image_width = 500  # Adjust as needed
+    image_height = 500  # Adjust as needed
     x_position = (letter[0] - image_width) / 2  # Center horizontally
     y_position = (letter[1] - image_height) / 2 + 75  # Center vertically
 
     # Draw the image onto the PDF
     c.drawImage(ImageReader(image_data), x_position, y_position, width=image_width, height=image_height)
+
+    # Add text (filename)
+    text_x_position = 110  # Adjust as needed
+    text_y_position = 120   # Adjust as needed
+    hash_value = "13c78c707b010724cd9e1f596b58246a2c829384fc8a8a4b49aa38b3fddfc1c2"
+    c.drawString(text_x_position, text_y_position, os.path.basename(hash_value))
 
     # Save the PDF
     c.save()
