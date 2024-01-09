@@ -84,6 +84,17 @@ def save_image(image_data, format, original_filename, article_hash):
     else:
         print(f"Unsupported format: {format}")
 
+def rename_file_to_article_hash(original_filename, article_hash):
+    if article_hash:
+        new_filename = f"{article_hash}.html"
+        try:
+            os.rename(original_filename, new_filename)
+            print(f"Renamed '{original_filename}' to '{new_filename}'")
+        except OSError as error:
+            print(f"Error renaming file: {error}")
+    else:
+        print(f"Article hash not found for '{original_filename}'. File not renamed.")
+
 # Iterate over all HTML files in the current directory
 for filename in os.listdir('.'):
     if filename.endswith('.html'):
@@ -92,6 +103,9 @@ for filename in os.listdir('.'):
 
         base64_image = extract_base64_image(html_content)
         article_hash = extract_article_hash(html_content)
+
+        rename_file_to_article_hash(filename, article_hash)
+
         if base64_image:
             image_data = io.BytesIO(base64.b64decode(base64_image))
             save_image(image_data, 'pdf', filename, article_hash)  # Or 'png' based on requirement
